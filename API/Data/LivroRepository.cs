@@ -2,6 +2,7 @@ using System;
 using API.Entities;
 using API.Helpers;
 using API.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Data.Migrations;
 
@@ -34,6 +35,11 @@ public class LivroRepository : ILivroRepository
 	{
 		var livros = _context.Livros;
 		return await PagedList<Livro>.CreateAsync(livros, pgaParams.PageNumber, pgaParams.PageSize);
+	}
+
+	public async Task<List<Livro>> GetLivrosAsync()
+	{
+		return await _context.Livros.ToListAsync();
 	}
 
 	public void UpdateLivro(Livro livro)

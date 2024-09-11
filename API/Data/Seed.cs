@@ -13,14 +13,22 @@ public class Seed
 
 
 
-	public static async Task SeedUser(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+	public static async Task SeedUser(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, DataContext context)
 	{
+		if (!await context.Livros.AnyAsync())
+		{
+			var userData = await File.ReadAllTextAsync("Data/MOCK_DATA.json");
+			var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+			var livros = JsonSerializer.Deserialize<List<Livro>>(userData, options);
+			await context.Livros.AddRangeAsync(livros);
+			await context.SaveChangesAsync();
+		}
+		//113c71d7-544b-4274-91fc-75820928588a	
+
 		if (await userManager.Users.AnyAsync()) return;
 
-		// var userData = await File.ReadAllTextAsync("Data/UserSeedData.json");
-		// var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-		// var users = JsonSerializer.Deserialize<List<AppUser>>(userData, options);
 
 		var roles = new List<AppRole>{
 			new AppRole{Name = "User"},
@@ -51,6 +59,8 @@ public class Seed
 		};
 		await userManager.CreateAsync(admin, "Pa$$w0rd");
 		await userManager.AddToRolesAsync(admin, ["Admin", "User"]);
+
+
 
 
 	}

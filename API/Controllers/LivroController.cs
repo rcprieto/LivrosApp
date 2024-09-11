@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize(Policy = "RequireAdminRole")]
+    //[Authorize(Policy = "RequireAdminRole")]
     public class LivroController : BaseApiController
     {
         private readonly IUnitOfWork _uow;
@@ -19,6 +19,22 @@ namespace API.Controllers
             _uow = uow;
             _mapper = mapper;
         }
+
+        [HttpGet("get-livros")]
+        public async Task<ActionResult<PagedList<Livro>>> GetTodosLivro([FromQuery] PaginationParams paginationParams)
+        {
+            var livros = await _uow.LivroRepository.GetLivrosAsync();
+            if (livros != null)
+            {
+                return Ok(livros);
+            }
+            else
+            {
+                return BadRequest("Sem livros");
+            }
+        }
+
+
 
         [HttpGet]
         public async Task<ActionResult<PagedList<Livro>>> GetLivro([FromQuery] PaginationParams paginationParams)

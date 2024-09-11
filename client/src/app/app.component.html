@@ -1,0 +1,6 @@
+<h1>{{title}}</h1>
+<ul>
+  @for (livro of livros; track livro.id) {
+  <li><i class="fal fa-book"></i> {{livro.nome}} - {{livro.autor}}</li>
+  }
+</ul>

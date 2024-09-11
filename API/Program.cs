@@ -4,6 +4,19 @@ using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+//ng new client para criar o site em angular, rodar na raiz fora de API
+//mkdir ssl
+//cd ssl
+//mkcert localhost
+//No angular.json na tag serve:{}
+//"options": {
+// "ssl": true,
+// "sslCert": "ssl/localhost.pem",
+// "sslKey": "ssl/localhost-key.pem"
+// },
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -22,7 +35,7 @@ app.UseCors(x =>
 	x.AllowAnyHeader()
 	.AllowAnyMethod()
 	.AllowCredentials() //SignaIR precisa
-	.WithOrigins("https://localhost:4200"));
+	.WithOrigins(["https://localhost:4200", "http://localhost:4200"]));
 
 app.UseAuthentication(); //Vc tem um token valido
 app.UseAuthorization(); //Vc tem um token mas o que vc pode fazer
@@ -37,9 +50,9 @@ try
 	var userManager = services.GetRequiredService<UserManager<AppUser>>();
 	var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
 	await context.Database.MigrateAsync();
-	await context.Database.ExecuteSqlRawAsync("DELETE FROM [Connections]"); //Para sqllite
-																			//await context.Database.ExecuteSqlRawAsync("TRUNCATE FROM TABLE [Connections]");
-	await Seed.SeedUser(userManager, roleManager);
+	//await context.Database.ExecuteSqlRawAsync("DELETE FROM [Connections]"); //Para sqllite
+	//await context.Database.ExecuteSqlRawAsync("TRUNCATE FROM TABLE [Connections]");
+	//await Seed.SeedUser(userManager, roleManager, context);
 
 }
 catch (Exception ex)

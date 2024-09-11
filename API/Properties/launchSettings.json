@@ -7,11 +7,33 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:5000;https://localhost:5001",
+      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    "https": {
+        "hotReloadEnabled" : false,
+        "commandName": "Project",
+        "dotnetRunMessages": true,
+        "console": "integratedTerminal",
+        "launchBrowser": false,
+        "applicationUrl": "https://localhost:5001",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      },
+      "api": {
+        "hotReloadEnabled" : false,
+        "commandName": "Project",
+        "dotnetRunMessages": true,
+        "console": "integratedTerminal",
+        "launchBrowser": false,
+        "applicationUrl": "https://localhost:5001",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      }
     
   }
 }
