@@ -1,4 +1,5 @@
 ﻿using API.Entities;
+using API.Helpers;
 
 namespace API;
 
@@ -8,5 +9,6 @@ public interface IAppUserRepository
 	Task<IEnumerable<AppUser>> GetUsersAsync();
 	Task<AppUser?> GetUserById(string id);
 	Task<AppUser?> GetUserByUsernameAsync(string username);
+	Task<PagedList<UserDto>> GetUsersPaginatedAsync(PaginationParams userParams);
 
 }

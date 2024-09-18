@@ -7,6 +7,7 @@ public class RegisterDto
 	[Required]
 	public required string UserName { get; set; }
 
+	public required string Email { get; set; }
 
 	[Required]
 	[StringLength(8, MinimumLength = 4)]

@@ -1,6 +1,10 @@
-<h1>{{title}}</h1>
-<ul>
+<app-nav></app-nav>
+<div class="container" style="margin-top: 80px;">
+  <router-outlet></router-outlet>
+</div>
+
+<!-- <ul style="margin-top: 80px;">
   @for (livro of livros; track livro.id) {
   <li><i class="fal fa-book"></i> {{livro.nome}} - {{livro.autor}}</li>
   }
-</ul>
+</ul> -->

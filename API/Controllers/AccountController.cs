@@ -24,36 +24,14 @@ public class AccountController : BaseApiController
 		_mapper = mapper;
 	}
 
-	[HttpPost("register")] //POST: api/account/register
-	public async Task<ActionResult<UserDto>> Register(RegisterDto model)
-	{
-		var user = _mapper.Map<AppUser>(model);
 
-		user.UserName = model.UserName.Trim();
-
-		var result = await _userMananger.CreateAsync(user, model.Password);
-
-		if (!result.Succeeded) return BadRequest(result.Errors);
-
-		var rolesResult = await _userMananger.AddToRoleAsync(user, "Member");
-
-		if (!rolesResult.Succeeded) return BadRequest(result.Errors);
-
-		return new UserDto
-		{
-			Username = user.UserName,
-			Token = await _tokenService.CreateToken(user),
-
-		};
-
-	}
 
 
 	[HttpPost("login")]
 	public async Task<ActionResult<UserDto>> Login(LoginDto model)
 	{
 		var user = await _userMananger.Users
-			.SingleOrDefaultAsync(m => m.UserName == model.UserName);
+			.SingleOrDefaultAsync(m => m.Email == model.Email);
 
 		if (user == null) return Unauthorized();
 
@@ -63,9 +41,9 @@ public class AccountController : BaseApiController
 
 		return new UserDto
 		{
-			Username = user.UserName,
+			UserName = user.UserName,
 			Token = await _tokenService.CreateToken(user),
-
+			Email = user.Email
 		};
 
 	}

@@ -33,6 +33,27 @@ public class AppUserRepository : IAppUserRepository
 		.ToListAsync();
 	}
 
+	public async Task<PagedList<UserDto>> GetUsersPaginatedAsync(PaginationParams userParams)
+	{
+		var query = _context.Users
+		.Select(c => new UserDto
+		{
+			Id = c.Id,
+			Email = c.Email,
+			UserName = c.UserName,
+			Roles = c.UserRoles.Select(r => r.Role.Name).ToList()
+
+		}).AsQueryable();
+
+		//query = query.Where(c => c.UserName != userParams.CurrentUserName);
+
+
+
+		return await PagedList<UserDto>
+		.CreateAsync(query.AsNoTracking(), userParams.PageNumber, userParams.PageSize);
+
+	}
+
 
 
 	public void Update(AppUser user)

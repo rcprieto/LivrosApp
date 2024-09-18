@@ -1,0 +1,40 @@
+<table class="table mt-5">
+  <thead class="table-dark">
+    <tr>
+      <th>Editar</th>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Acessos</th>
+    </tr>
+
+  </thead>
+  <tbody>
+    @for (user of users?.result; track user.id) {
+    <tr>
+      <td> <button (click)="editUser(user)"
+                class="btn text-info"><i class="fal fa-edit"></i></button> </td>
+      <td>{{user.userName}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.roles}}</td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+
+@if(users.pagination != null){
+<div class="d-flex justify-content-center">
+  <pagination [boundaryLinks]="true"
+              [itemsPerPage]="users?.pagination!.itemsPerPage"
+              [totalItems]="users?.pagination?.totalItems!"
+              [maxSize]="10"
+              (pageChanged)="pageChanged($event)"
+              previousText="&lsaquo;"
+              nextText="&rsaquo;"
+              firstText="&laquo;"
+              lastText="&raquo;">
+
+  </pagination>
+
+</div>
+}

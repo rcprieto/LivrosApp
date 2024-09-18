@@ -1,0 +1,57 @@
+<h1>Cadastro de Usuários</h1>
+<form (ngSubmit)="register()"
+      autocomplete="off"
+      [formGroup]="registerForm">
+
+  <input type="hidden"
+         name="Id"
+         [formControl]="$any(registerForm.controls['id'])">
+
+  <div class="row">
+    <div class="col">
+      <app-text-input [type]="'text'"
+                      [formControl]="$any(registerForm.controls['email'])"
+                      [label]="'Email'"></app-text-input>
+    </div>
+    <div class="col">
+      <app-text-input [type]="'text'"
+                      [formControl]="$any(registerForm.controls['userName'])"
+                      [label]="'Nome'"></app-text-input>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col">
+      <app-text-input [type]="'password'"
+                      [formControl]="$any(registerForm.controls['password'])"
+                      [label]="'Senha'"></app-text-input>
+    </div>
+    <div class="col">
+      <app-text-input [type]="'password'"
+                      [formControl]="$any(registerForm.controls['confirmPassword'])"
+                      [label]="'Confirmar Senha'"></app-text-input>
+    </div>
+  </div>
+
+
+
+
+
+  <button type="submit"
+          class="btn mx-2"
+          [ngClass]="{'btn-success' : this.registerForm.valid, 'btn-danger' : this.registerForm.invalid}"
+          [disabled]="this.registerForm.invalid">Salvar
+
+    @if(this.registerForm.invalid){
+    <i class="fal fa-exclamation-triangle"></i>
+    }
+
+  </button>
+  <button type="button"
+          class="btn btn-info"
+          (click)="cancel();">Cancelar</button>
+</form>
+
+<app-user-list (selectedUser)="fillForm($event)"
+               (mudarPagina)="pagedChanged($event)"
+               [users]="paginatedResults"></app-user-list>

@@ -9,6 +9,7 @@ public class AutoMapperProfiles : Profile
 	{
 		// CreateMap<DateTime, DateTime>().ConvertUsing(x => DateTime.SpecifyKind(x, DateTimeKind.Utc));
 		// CreateMap<DateTime?, DateTime?>().ConvertUsing(x => x.HasValue ? DateTime.SpecifyKind(x.Value, DateTimeKind.Utc) : null);
+		CreateMap<RegisterDto, AppUser>();
 
 	}
 
