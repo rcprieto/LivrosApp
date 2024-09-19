@@ -15,6 +15,7 @@ public static class IdentityServiceExtensions
 		services.AddIdentityCore<AppUser>(opt =>
 		{
 			opt.Password.RequireNonAlphanumeric = false;
+			opt.User.AllowedUserNameCharacters = "abcçdefgğhijklmnoöpqrsştuüvwxyzABCÇDEFGĞHIİJKLMNOÖPQRSŞTUÜVWXY0123456789-._@+/ ";
 		})
 		.AddRoles<AppRole>()
 		.AddRoleManager<RoleManager<AppRole>>()

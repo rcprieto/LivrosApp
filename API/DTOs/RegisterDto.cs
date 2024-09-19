@@ -9,6 +9,8 @@ public class RegisterDto
 
 	public required string Email { get; set; }
 
+	public List<string>? Roles { get; set; }
+
 	[Required]
 	[StringLength(8, MinimumLength = 4)]
 	public required string Password { get; set; }

@@ -55,12 +55,21 @@ public class UsersController : BaseApiController
 		user.UserName = model.UserName.Trim();
 
 		var result = await _userMananger.CreateAsync(user, model.Password);
-
 		if (!result.Succeeded) return BadRequest(String.Join(", ", result.Errors.Select(c => c.Description)));
 
-		var rolesResult = await _userMananger.AddToRoleAsync(user, "User");
+		if (model.Roles != null && model.Roles.Any())
+		{
+			//Adiciona as roles que ele não tem ainda
+			var resultRole = await _userMananger.AddToRolesAsync(user, model.Roles);
+			if (!resultRole.Succeeded) return BadRequest(String.Join(", ", resultRole.Errors.Select(c => c.Description)));
 
-		if (!rolesResult.Succeeded) return BadRequest(String.Join(", ", result.Errors.Select(c => c.Description)));
+		}
+		else
+		{
+			var resultRole = await _userMananger.AddToRoleAsync(user, "User");
+			if (!resultRole.Succeeded) return BadRequest(String.Join(", ", resultRole.Errors.Select(c => c.Description)));
+		}
+
 
 		return new UserDto
 		{
@@ -78,14 +87,41 @@ public class UsersController : BaseApiController
 		if (user == null) return NotFound();
 
 		user.UserName = model.UserName;
-		//_mapper.Map(model, user);
+
+
+		var userRoles = await _userMananger.GetRolesAsync(user);
 
 		var teste = await _uow.Complete();
+		if (!teste) return BadRequest("Erro ao atualizar o usuário");
+
+		if (!String.IsNullOrEmpty(model.Password) && !String.IsNullOrEmpty(model.PasswordAntigo))
+		{
+			var resultPass = await _userMananger.ChangePasswordAsync(user, model.Password, model.PasswordAntigo);
+			if (!resultPass.Succeeded)
+				return BadRequest(String.Join(", ", resultPass.Errors.Select(c => c.Description)));
+		}
+
+
+		if (model.Roles != null && model.Roles.Any())
+		{
+			//Adiciona as roles que ele não tem ainda
+			var result = await _userMananger.AddToRolesAsync(user, model.Roles.Except(userRoles));
+			if (!result.Succeeded) return BadRequest("Erro ao incluir Roles");
+
+			//Remove outras que não estão na lista
+			result = await _userMananger.RemoveFromRolesAsync(user, userRoles.Except(model.Roles));
+			if (!result.Succeeded) return BadRequest("Erro ao remover Roles");
+		}
+		else
+		{
+
+			var result = await _userMananger.RemoveFromRolesAsync(user, userRoles);
+			if (!result.Succeeded) return BadRequest("Erro ao remover Roles");
+		}
 
 		if (teste) return NoContent();
 
 		return BadRequest("Erro ao atualizar o usuário");
-
 
 	}
 

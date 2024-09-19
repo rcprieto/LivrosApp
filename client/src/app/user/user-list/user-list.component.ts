@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, input, OnInit, Output, Signal, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, input, OnInit, output, Output, Signal, signal } from '@angular/core';
 import { UserService } from '../../_services/user.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { User } from '../../_models/user';
@@ -14,9 +14,10 @@ import { PaginatedResut } from '../../_models/pagination';
 export class UserListComponent implements OnInit{
 
 
-  @Output() selectedUser: EventEmitter<User> = new EventEmitter<User>();
-  @Output() mudarPagina: EventEmitter<any> = new EventEmitter<any>();
-  @Input() users: PaginatedResut<User[]> = {};
+  mudarPagina = output<any>();
+  selectedUser = output<User>();
+  //@Input() users: PaginatedResut<User[]> = {};
+  users = input.required<PaginatedResut<User[]> | null>();
 
 
 
@@ -31,6 +32,7 @@ export class UserListComponent implements OnInit{
   {
     user.password = "";
     user.confirmPassword = "";
+    user.passwordAntigo = "";
     this.selectedUser.emit(user);
   }
 

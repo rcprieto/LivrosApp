@@ -1,7 +1,18 @@
-<h1>Cadastro de Usuários</h1>
-<form (ngSubmit)="register()"
+<div class="d-flex">
+  <h3>Cadastro de Usuários</h3> <button class="btn btn-success mx-2 "
+          type="button"
+          (click)="criarUsuario()">
+    <i class="fal fa-plus"> </i> Novo
+  </button>
+</div>
+
+@if(novoCadastro){
+
+
+<form (ngSubmit)="salvarCadastro()"
       autocomplete="off"
-      [formGroup]="registerForm">
+      [formGroup]="registerForm"
+      class="mt-3">
 
   <input type="hidden"
          name="Id"
@@ -20,11 +31,20 @@
     </div>
 
   </div>
+  @if(this.user.id.length > 2){
+  <div class="row">
+    <div class="col">
+      <app-text-input [type]="'password'"
+                      [formControl]="$any(registerForm.controls['passwordAntigo'])"
+                      [label]="'Senha Atual'"></app-text-input>
+    </div>
+  </div>
+  }
   <div class="row">
     <div class="col">
       <app-text-input [type]="'password'"
                       [formControl]="$any(registerForm.controls['password'])"
-                      [label]="'Senha'"></app-text-input>
+                      [label]="'Nova Senha'"></app-text-input>
     </div>
     <div class="col">
       <app-text-input [type]="'password'"
@@ -33,9 +53,25 @@
     </div>
   </div>
 
+  <div class="mb-3">
+    @for(role of avaliableRoles; track $index){
+    <div class="row">
+      <div class="col">
+        <div class="form-check">
+          <input type="checkbox"
+                 class="form-check-input"
+                 value="{{role}}"
+                 (change)="onCheckChange($event)"
+                 [checked]="selectedRoles.includes(role)" />
+          <label>{{role}}</label>
 
 
+        </div>
+      </div>
 
+    </div>
+    }
+  </div>
 
   <button type="submit"
           class="btn mx-2"
@@ -49,9 +85,10 @@
   </button>
   <button type="button"
           class="btn btn-info"
-          (click)="cancel();">Cancelar</button>
+          (click)="cancelar();">Cancelar</button>
 </form>
+}
 
-<app-user-list (selectedUser)="fillForm($event)"
+<app-user-list (selectedUser)="preencherFormulario($event)"
                (mudarPagina)="pagedChanged($event)"
-               [users]="paginatedResults"></app-user-list>
+               [users]="paginatedResults()"></app-user-list>

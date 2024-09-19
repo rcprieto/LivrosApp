@@ -9,7 +9,7 @@
 
   </thead>
   <tbody>
-    @for (user of users?.result; track user.id) {
+    @for (user of users()?.result; track user.id) {
     <tr>
       <td> <button (click)="editUser(user)"
                 class="btn text-info"><i class="fal fa-edit"></i></button> </td>
@@ -22,11 +22,11 @@
 </table>
 
 
-@if(users.pagination != null){
+@if(users()?.pagination != null){
 <div class="d-flex justify-content-center">
   <pagination [boundaryLinks]="true"
-              [itemsPerPage]="users?.pagination!.itemsPerPage"
-              [totalItems]="users?.pagination?.totalItems!"
+              [itemsPerPage]="users()?.pagination!.itemsPerPage"
+              [totalItems]="users()?.pagination?.totalItems!"
               [maxSize]="10"
               (pageChanged)="pageChanged($event)"
               previousText="&lsaquo;"

@@ -18,17 +18,18 @@
       <ul class="navbar-nav me-auto mb-2 mb-md-0"
           *ngIf="(this.accountService.currentUser)">
 
-        <li class="nav-item">
-          <a class="nav-link active"
-             aria-current="page"
-             href="#">Home</a>
-        </li>
+        @if(accountService.currentUser()?.roles?.includes("Admin"))
+        {
         <li class="nav-item">
           <a class="nav-link"
-             href="#">Cadastrar</a>
+             routerLinkActive="active"
+             routerLink="/user/user-register">Cadastrar Usuários</a>
         </li>
+        }
+
         <li class="nav-item">
-          <a class="nav-link">Lista</a>
+          <a class="nav-link"
+             routerLinkActive="active">Lista</a>
         </li>
 
       </ul>
