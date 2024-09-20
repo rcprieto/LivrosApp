@@ -77,19 +77,5 @@ namespace API.Controllers
 
         }
 
-        // [HttpPut]
-        // public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
-        // {
-        //     var user = await _appUserRepository.GetUserByUsernameAsync(User.GetUserName());
-        //     if (user == null) return NotFound();
-
-        //     _mapper.Map(memberUpdateDto, user);
-
-        //     if (await _appUserRepository.SaveAllAsync()) return NoContent();
-
-        //     return BadRequest("Erro ao atualizar o usuário");
-
-
-        // }
     }
 }
