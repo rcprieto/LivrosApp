@@ -1,0 +1,42 @@
+<table class="table mt-5"
+       datatable
+       [dtOptions]="dtOptions">
+  <thead class="table-secondary">
+    <tr>
+      <th>Editar</th>
+      <th>Livro</th>
+      <th>Autor</th>
+      <th>Finalizado em</th>
+    </tr>
+
+  </thead>
+  <tbody>
+    @for (livro of paginatedResults().result; track livro.id) {
+    <tr>
+      <td> <button (click)="editarLivro(livro)"
+                class="btn btn-info"><i class="fal fa-edit"></i></button> </td>
+      <td>{{livro.nome}}</td>
+      <td>{{livro.autor}}</td>
+      <td>{{(livro.fimLeitura | date: 'd \'de\' MMMM \'de\' y': '' : 'pt-BR')?.toUpperCase()}}</td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+
+@if(paginatedResults().pagination != null){
+<div class="d-flex justify-content-center">
+  <pagination [boundaryLinks]="true"
+              [itemsPerPage]="paginatedResults().pagination!.itemsPerPage"
+              [totalItems]="paginatedResults().pagination?.totalItems!"
+              [maxSize]="10"
+              (pageChanged)="mudarPagina($event)"
+              previousText="&lsaquo;"
+              nextText="&rsaquo;"
+              firstText="&laquo;"
+              lastText="&raquo;">
+
+  </pagination>
+
+</div>
+}
