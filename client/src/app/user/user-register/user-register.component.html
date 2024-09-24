@@ -32,7 +32,8 @@
     </div>
 
   </div>
-  @if(this.user.id.length > 2){
+
+  @if(!novoUsuario){
   <div class="row">
     <div class="col">
       <app-text-input [type]="'password'"
@@ -92,4 +93,4 @@
 
 <app-user-list (selectedUser)="preencherFormulario($event)"
                (mudarPagina)="pagedChanged($event)"
-               [users]="paginatedResults()"></app-user-list>
+               [users]="this.userServices.paginatedResults()"></app-user-list>

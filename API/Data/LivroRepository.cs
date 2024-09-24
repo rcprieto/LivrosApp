@@ -20,7 +20,12 @@ public class LivroRepository : ILivroRepository
 		_context.Livros.Add(livro);
 	}
 
-	public async Task<Livro?> GetLivroById(int id)
+	public void DeleteLivro(Livro livro)
+	{
+		_context.Livros.Remove(livro);
+	}
+
+	public async Task<Livro?> GetLivroByIdAsync(int id)
 	{
 		return await _context.Livros.FindAsync(id);
 	}

@@ -1,34 +1,52 @@
-<table class="table mt-5"
-       datatable
-       [dtOptions]="dtOptions">
+<button (click)="abrirModalCadastro()"
+        class="btn btn-info"
+        type="button">
+  Novo Livro <i class="fal fa-book"></i>
+</button>
+
+<swal #deleteSwal
+      title="Excluir {{this.livro?.nome}}?"
+      text="Não poderá ser desfeito"
+      icon="question"
+      [showCancelButton]="true"
+      [focusCancel]="true"
+      (confirm)="confirmarExclusao(this.livro!)">
+</swal>
+
+<table class="table mt-5">
   <thead class="table-secondary">
     <tr>
-      <th>Editar</th>
+      <th>Ações</th>
       <th>Livro</th>
       <th>Autor</th>
-      <th>Finalizado em</th>
+      <th class="text-center">Iniciado em</th>
+      <th class="text-center">Finalizado em</th>
     </tr>
 
   </thead>
   <tbody>
-    @for (livro of paginatedResults().result; track livro.id) {
+    @for (livro of this.livrosService.paginatedResults().result; track livro.id) {
     <tr>
       <td> <button (click)="editarLivro(livro)"
-                class="btn btn-info"><i class="fal fa-edit"></i></button> </td>
+                class="btn btn-info"><i class="fal fa-edit"></i></button>
+        <button (click)="excluirLivro(livro)"
+                class="btn btn-danger mx-2"><i class="fal fa-trash"></i></button>
+      </td>
       <td>{{livro.nome}}</td>
       <td>{{livro.autor}}</td>
-      <td>{{(livro.fimLeitura | date: 'd \'de\' MMMM \'de\' y': '' : 'pt-BR')?.toUpperCase()}}</td>
+      <td class="text-center">{{(livro.inicioLeitura | date: 'dd/MM/yyyy' : 'pt-BR')}}</td>
+      <td class="text-center">{{(livro.fimLeitura | date: 'd \'de\' MMMM \'de\' y': '' : 'pt-BR')?.toUpperCase()}}</td>
     </tr>
     }
   </tbody>
 </table>
 
 
-@if(paginatedResults().pagination != null){
+@if(this.livrosService.paginatedResults().pagination != null){
 <div class="d-flex justify-content-center">
   <pagination [boundaryLinks]="true"
-              [itemsPerPage]="paginatedResults().pagination!.itemsPerPage"
-              [totalItems]="paginatedResults().pagination?.totalItems!"
+              [itemsPerPage]="this.livrosService.paginatedResults().pagination!.itemsPerPage"
+              [totalItems]="this.livrosService.paginatedResults().pagination?.totalItems!"
               [maxSize]="10"
               (pageChanged)="mudarPagina($event)"
               previousText="&lsaquo;"

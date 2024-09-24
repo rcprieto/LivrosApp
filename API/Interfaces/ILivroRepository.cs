@@ -1,3 +1,4 @@
+using API.DTOs;
 using API.Entities;
 using API.Helpers;
 
@@ -9,7 +10,8 @@ public interface ILivroRepository
 	void UpdateLivro(Livro livro);
 	Task<PagedList<Livro>> GetLivrosAsync(PaginationParams pgaParams);
 	Task<List<Livro>> GetLivrosAsync();
-	Task<Livro?> GetLivroById(int id);
+	void DeleteLivro(Livro livro);
+	Task<Livro?> GetLivroByIdAsync(int id);
 	Task<PagedList<Livro>?> GetLivroByUsernameAsync(PaginationParams pgaParams, string userId);
 
 }

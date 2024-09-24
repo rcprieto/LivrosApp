@@ -1,3 +1,4 @@
+using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Helpers;
@@ -21,12 +22,13 @@ namespace API.Controllers
         }
 
         [HttpGet("get-livros")]
-        public async Task<ActionResult<PagedList<Livro>>> GetTodosLivro([FromQuery] PaginationParams paginationParams)
+        public async Task<ActionResult<PagedList<LivroDto>>> GetTodosLivro([FromQuery] PaginationParams paginationParams)
         {
             var livros = await _uow.LivroRepository.GetLivrosAsync();
             if (livros != null)
             {
-                return Ok(livros);
+                var retorno = _mapper.Map<List<LivroDto>>(livros);
+                return Ok(retorno);
             }
             else
             {
@@ -37,12 +39,13 @@ namespace API.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<PagedList<Livro>>> GetLivro([FromQuery] PaginationParams paginationParams)
+        public async Task<ActionResult<PagedList<LivroDto>>> GetLivro([FromQuery] PaginationParams paginationParams)
         {
             var livros = await _uow.LivroRepository.GetLivroByUsernameAsync(paginationParams, User.GetUserId());
             if (livros != null)
             {
                 Response.AddPaginationHeader(new PaginationHeader(livros.CurrentPage, livros.PageSize, livros.TotalCount, livros.TotalPages));
+
                 return Ok(livros);
             }
             else
@@ -52,28 +55,58 @@ namespace API.Controllers
         }
 
         [HttpPost("add-livro")]
-        public async Task<ActionResult<Livro>> AddLivro(Livro model)
+        public async Task<ActionResult<Livro>> AddLivro([FromBody] LivroDto model)
         {
 
             model.AppUserId = User.GetUserId();
+            var livro = _mapper.Map<Livro>(model);
 
-            _uow.LivroRepository.AddLivro(model);
-            if (await _uow.Complete())
+            _uow.LivroRepository.AddLivro(livro);
+
+            if (!await _uow.Complete())
                 return BadRequest("Erro ao salvar");
+
+            model.Id = livro.Id;
 
             return Ok(model);
 
         }
 
         [HttpPut]
-        public async Task<ActionResult<Livro>> UpdateLivro(Livro model)
+        public async Task<ActionResult<Livro>> UpdateLivro(LivroDto model)
         {
-            _uow.LivroRepository.UpdateLivro(model);
+            var livro = _mapper.Map<Livro>(model);
 
-            if (await _uow.Complete())
+            _uow.LivroRepository.UpdateLivro(livro);
+
+            if (!await _uow.Complete())
                 return BadRequest("Erro ao atualizar");
 
             return Ok(model);
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteLivro(int id)
+        {
+
+
+            var item = await _uow.LivroRepository.GetLivroByIdAsync(id);
+            if (User.GetUserId() == item.AppUserId)
+            {
+                if (item != null)
+                    _uow.LivroRepository.DeleteLivro(item);
+
+                if (!await _uow.Complete())
+                    return BadRequest("Erro ao excluir");
+
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Livro de outro usuário");
+            }
+
 
         }
 

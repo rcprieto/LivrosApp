@@ -13,6 +13,8 @@ import { jwtInterceptor } from './_interceptors/jwt.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { loadingInterceptor } from './_interceptors/loading.interceptor';
 import localePT from '@angular/common/locales/pt';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 import { registerLocaleData } from '@angular/common';
 registerLocaleData(localePT);
@@ -28,6 +30,10 @@ export const appConfig: ApplicationConfig = {
     provideToastr({
       positionClass: 'toast-bottom-right',
     }),
-    importProvidersFrom(NgxSpinnerModule),
+    importProvidersFrom(
+      NgxSpinnerModule,
+      ModalModule.forRoot(),
+      SweetAlert2Module.forRoot()
+    ),
   ],
 };

@@ -43,7 +43,8 @@ public class AccountController : BaseApiController
 		{
 			UserName = user.UserName,
 			Token = await _tokenService.CreateToken(user),
-			Email = user.Email
+			Email = user.Email,
+			Id = user.Id
 		};
 
 	}

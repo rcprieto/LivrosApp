@@ -1,13 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Entities;
+namespace API.DTOs;
 
-public class Livro
+public class LivroDto
 {
+	public int Id { get; set; } = 0;
 
-	public int Id { get; set; }
 	[StringLength(150)]
 	public required string Nome { get; set; }
 
@@ -22,12 +21,6 @@ public class Livro
 
 	[StringLength(500)]
 	public string? Resumo { get; set; }
-
-	public required string AppUserId { get; set; }
-
-	[ForeignKey("AppUserId")]
-	public AppUser? AppUser { get; set; }
-
-
+	public string? AppUserId { get; set; }
 
 }

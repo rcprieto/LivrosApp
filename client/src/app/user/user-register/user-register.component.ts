@@ -64,13 +64,12 @@ export class UserRegisterComponent implements OnInit {
   private toastr = inject(ToastrService);
   userServices = inject(UserService);
   state = 'closed';
+  novoUsuario = true;
 
   pageNumber = 1;
   pageSize = 10;
 
   //Retorna a lista de usuários e passa para o user-list pelo input dele
-  paginatedResults = signal<PaginatedResut<User[]>>({});
-
   user: User = {
     id: '',
     userName: '',
@@ -89,15 +88,15 @@ export class UserRegisterComponent implements OnInit {
   validationErrors: string[] | undefined;
 
   //Serve para avisar o usuário que ele está saindo sem salvar
-  @HostListener('window:beforeunload', ['$event']) unloadNotification(
-    $event: any
-  ) {
-    if (this.registerForm.dirty) $event.returnValue = true;
-  }
+  // @HostListener('window:beforeunload', ['$event']) unloadNotification(
+  //   $event: any
+  // ) {
+  //   if (this.registerForm.dirty) $event.returnValue = true;
+  // }
 
   ngOnInit(): void {
     this.inicializarFormulario();
-    this.retornaUsuarios();
+    this.userService.getUserListPaginated(this.pageNumber, this.pageSize);
     this.cancelar();
   }
 
@@ -130,37 +129,42 @@ export class UserRegisterComponent implements OnInit {
     this.user = this.registerForm.value;
 
     //Cria usuário
-    if (this.user.id.length == 0) {
+    if (this.novoUsuario) {
       if (!this.user.password || this.user.password.length < 4) {
         this.toastr.error('Por favor informar uma senha.');
+        return false;
       }
       this.userService.register(this.user).subscribe({
         error: (retorno) => {
           this.validationErrors = retorno;
+          return false;
         },
         complete: () => {
           this.registerForm?.reset();
           this.toastr.success('Cadastrado com Sucesso!');
-          this.retornaUsuarios();
           this.cancelar();
+          return true;
         },
       });
     } else {
       this.userService.updateUser(this.user).subscribe({
         error: (retorno) => {
           this.validationErrors = retorno;
+          return false;
         },
         complete: () => {
           this.registerForm?.reset();
           this.toastr.success('Atualizado com Sucesso!');
-          this.retornaUsuarios();
           this.cancelar();
+          return true;
         },
       });
     }
+    return false;
   }
 
   preencherFormulario(model: User) {
+    this.novoUsuario = false;
     this.user = model;
     this.selectedRoles = this.user.roles;
     this.registerForm.setValue(this.user);
@@ -173,28 +177,15 @@ export class UserRegisterComponent implements OnInit {
   cancelar() {
     this.registerForm?.reset();
     this.selectedRoles = [];
-    this.user.id = '';
     this.state = 'closed';
-  }
-
-  retornaUsuarios() {
-    this.userServices
-      .getUserListPaginated(this.pageNumber, this.pageSize)
-      .subscribe({
-        next: (response) => {
-          this.paginatedResults.set({
-            pagination: JSON.parse(response.headers.get('Pagination')!),
-            result: response.body as User[],
-          });
-        },
-      });
+    this.novoUsuario = true;
   }
 
   //Paginação
   pagedChanged(event: any) {
     if (this.pageNumber != event.page) {
       this.pageNumber = event.page;
-      this.retornaUsuarios();
+      this.userService.getUserListPaginated(this.pageNumber, this.pageSize);
     }
   }
 
@@ -207,6 +198,7 @@ export class UserRegisterComponent implements OnInit {
     };
   }
 
+  //Para selecionar as roles e coloca em uma array para salvar
   onCheckChange(event: any) {
     if (event.target.checked) this.selectedRoles.push(event.target.value);
     else

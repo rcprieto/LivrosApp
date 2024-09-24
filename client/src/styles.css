@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+.modal-header{
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+.btn-close{
+  margin-bottom: 10px !important;
+}

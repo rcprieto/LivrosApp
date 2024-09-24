@@ -5,6 +5,7 @@ import { BehaviorSubject, map, tap } from 'rxjs';
 import { User } from '../_models/user';
 import { getPaginatedResult, setPaginationHeader } from './paginationHelper';
 import { AccountService } from './account.service';
+import { PaginatedResut } from '../_models/pagination';
 
 @Injectable({
   providedIn: 'root',
@@ -14,15 +15,27 @@ export class UserService {
 
   private http = inject(HttpClient);
   accountService = inject(AccountService);
+  users = signal<User[]>([]);
+  paginatedResults = signal<PaginatedResut<User[]>>({ result: this.users() });
 
   getUserListPaginated(pageNumber: number, pageSize: number) {
     let params = setPaginationHeader(pageNumber, pageSize);
     //params = params.append('orderBy', 'username');
 
-    return this.http.get<User[]>(this.baseUrl + 'users', {
-      observe: 'response',
-      params,
-    });
+    return this.http
+      .get<User[]>(this.baseUrl + 'users', {
+        observe: 'response',
+        params,
+      })
+      .subscribe({
+        next: (response) => {
+          this.users.set(response.body as User[]);
+          this.paginatedResults.set({
+            pagination: JSON.parse(response.headers.get('Pagination')!),
+            result: this.users(),
+          });
+        },
+      });
 
     //this.http.get(this.baseUrl + 'users', this.getHttpOptions())
   }
@@ -40,16 +53,18 @@ export class UserService {
 
   register(model: any) {
     return this.http.post<User>(this.baseUrl + 'users/register', model).pipe(
-      map((user) => {
-        return user;
+      tap((user) => {
+        this.users().push(user);
+        this.paginatedResults.set({ result: this.users() });
       })
     );
   }
 
   updateUser(model: any) {
     return this.http.put<User>(this.baseUrl + 'users', model).pipe(
-      map((user) => {
-        return user;
+      tap(() => {
+        this.users.update((l) => l.map((m) => (m.id === model.id ? model : m)));
+        this.paginatedResults.set({ result: this.users() });
       })
     );
   }

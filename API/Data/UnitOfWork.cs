@@ -37,7 +37,16 @@ namespace API.Data
 
         public async Task<bool> Complete()
         {
-            return await _context.SaveChangesAsync() >= 0;
+            try
+            {
+                return await _context.SaveChangesAsync() >= 0;
+            }
+            catch (Exception err)
+            {
+
+                return false;
+
+            }
         }
 
         public bool HasChange()

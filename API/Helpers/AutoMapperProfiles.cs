@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.DTOs;
+using API.Entities;
 using AutoMapper;
 
 namespace API;
@@ -10,6 +11,8 @@ public class AutoMapperProfiles : Profile
 		// CreateMap<DateTime, DateTime>().ConvertUsing(x => DateTime.SpecifyKind(x, DateTimeKind.Utc));
 		// CreateMap<DateTime?, DateTime?>().ConvertUsing(x => x.HasValue ? DateTime.SpecifyKind(x.Value, DateTimeKind.Utc) : null);
 		CreateMap<RegisterDto, AppUser>();
+		CreateMap<LivroDto, Livro>();
+		CreateMap<Livro, LivroDto>();
 
 	}
 
