@@ -19,8 +19,8 @@ export class LivrosService {
   helperService = inject(HelperService);
   private toastrService = inject(ToastrService);
 
-  retornaLivros(pageNumber: number, pageSize: number) {
-    let params = setPaginationHeader(pageNumber, pageSize);
+  retornaLivros(pageNumber: number, pageSize: number, search: string) {
+    let params = setPaginationHeader(pageNumber, pageSize, search);
 
     return this.http
       .get<LivroDto[]>(`${this.baseUrl}livro`, {
@@ -38,12 +38,12 @@ export class LivrosService {
       });
   }
 
-  retornaLivro(id: number) {
-    const livro = this.livros().find((x) => x.id === id);
-    if (livro !== undefined) return of(livro);
+  // retornaLivro(id: number) {
+  //   const livro = this.livros().find((x) => x.id === id);
+  //   if (livro !== undefined) return of(livro);
 
-    return null;
-  }
+  //   return null;
+  // }
 
   cadastrarLivro(model: any) {
     model.fimLeitura = this.helperService.converterDataParaISO8601(

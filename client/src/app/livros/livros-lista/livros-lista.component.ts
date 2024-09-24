@@ -8,20 +8,20 @@ import {
 } from '@angular/core';
 import { LivrosService } from '../../_services/livros.service';
 import { ToastrService } from 'ngx-toastr';
-import { PaginatedResut } from '../../_models/pagination';
-import { Livro, LivroDto } from '../../_models/livro';
+import { LivroDto } from '../../_models/livro';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { DatePipe, NgFor, registerLocaleData } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { LivroModalComponent } from '../livro-modal/livro-modal.component';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { FormsModule } from '@angular/forms';
 
 //DatePipe, lingua no app.config (pt-BR)
 @Component({
   selector: 'app-livros-lista',
   standalone: true,
-  imports: [PaginationModule, DatePipe, SweetAlert2Module],
+  imports: [PaginationModule, DatePipe, SweetAlert2Module, FormsModule],
   templateUrl: './livros-lista.component.html',
   styleUrl: './livros-lista.component.css',
 })
@@ -44,10 +44,16 @@ export class LivrosListaComponent implements OnInit {
 
   pageNumber = 1;
   pageSize = 10;
+  search: string = '';
   //Retorna a lista de usuários e passa para o user-list pelo input dele
 
   ngOnInit(): void {
-    this.livrosService.retornaLivros(this.pageNumber, this.pageSize);
+    console.log(this.search);
+    this.livrosService.retornaLivros(
+      this.pageNumber,
+      this.pageSize,
+      this.search
+    );
   }
 
   abrirModalCadastro() {
@@ -65,8 +71,24 @@ export class LivrosListaComponent implements OnInit {
   mudarPagina(event: any) {
     if (this.pageNumber != event.page) {
       this.pageNumber = event.page;
-      this.livrosService.retornaLivros(this.pageNumber, this.pageSize);
+      this.livrosService.retornaLivros(
+        this.pageNumber,
+        this.pageSize,
+        this.search
+      );
     }
+  }
+
+  buscar(event: any) {
+    if (event.key === 'Enter') {
+      console.log('teste', this.search);
+      this.livrosService.retornaLivros(
+        this.pageNumber,
+        this.pageSize,
+        this.search
+      );
+    }
+    return false;
   }
 
   editarLivro(model: LivroDto) {

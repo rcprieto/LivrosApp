@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Globalization;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using API.Data;
@@ -20,10 +21,33 @@ public class Seed
 			var userData = await File.ReadAllTextAsync("Data/MOCK_DATA.json");
 			var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-			var livros = JsonSerializer.Deserialize<List<Livro>>(userData, options);
-			await context.Livros.AddRangeAsync(livros);
+			var livros = JsonSerializer.Deserialize<List<LivroMock>>(userData, options);
+			string format = "dd/MM/yyyy";
+			foreach (var livro in livros)
+			{
+				DateTime date = DateTime.ParseExact(livro.Data, format, CultureInfo.InvariantCulture);
+
+				Livro novo = new Livro()
+				{
+					Nome = livro.Nome ?? "",
+					Id = livro.Id,
+					Autor = livro.Autor ?? "",
+					AppUserId = "113c71d7-544b-4274-91fc-75820928588a",
+					InicioLeitura = date,
+					FimLeitura = date,
+
+
+				};
+
+				await context.Livros.AddRangeAsync(novo);
+			}
+
+
 			await context.SaveChangesAsync();
 		}
+
+
+
 		//113c71d7-544b-4274-91fc-75820928588a	
 
 		if (await userManager.Users.AnyAsync()) return;

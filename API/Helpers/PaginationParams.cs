@@ -15,5 +15,6 @@ public class PaginationParams
 	}
 
 	public string? CurrentUserName { get; set; }
+	public string? Search { get; set; }
 
 }

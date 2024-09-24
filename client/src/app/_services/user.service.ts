@@ -19,7 +19,7 @@ export class UserService {
   paginatedResults = signal<PaginatedResut<User[]>>({ result: this.users() });
 
   getUserListPaginated(pageNumber: number, pageSize: number) {
-    let params = setPaginationHeader(pageNumber, pageSize);
+    let params = setPaginationHeader(pageNumber, pageSize, '');
     //params = params.append('orderBy', 'username');
 
     return this.http

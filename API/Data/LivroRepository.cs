@@ -33,7 +33,15 @@ public class LivroRepository : ILivroRepository
 	public async Task<PagedList<Livro>?> GetLivroByUsernameAsync(PaginationParams pgaParams, string userId)
 	{
 		var livros = _context.Livros.Where(c => c.AppUser != null && c.AppUserId == userId);
-		return await PagedList<Livro>.CreateAsync(livros, pgaParams.PageNumber, pgaParams.PageSize);
+
+		if (!String.IsNullOrEmpty(pgaParams.Search))
+			livros = livros.Where(
+				c => c.Autor.ToUpper().Trim().Contains(pgaParams.Search.ToUpper().Trim())
+			|| c.Nome.Trim().ToUpper().Contains(pgaParams.Search.ToUpper().Trim()));
+
+		livros = livros.OrderByDescending(c => c.Id);
+
+		return await PagedList<Livro>.CreateAsync(livros.OrderByDescending(c => c.Id), pgaParams.PageNumber, pgaParams.PageSize);
 	}
 
 	public async Task<PagedList<Livro>> GetLivrosAsync(PaginationParams pgaParams)
