@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.Entities;
 using API.Helpers;
+using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,13 +17,15 @@ public class AccountController : BaseApiController
 	private readonly DataContext _context;
 	private readonly ITokenService _tokenService;
 	private readonly IMapper _mapper;
+	private readonly IEmailService _emailService;
 
-	public AccountController(UserManager<AppUser> userMananger, DataContext context, ITokenService tokenService, IMapper mapper)
+	public AccountController(UserManager<AppUser> userMananger, DataContext context, ITokenService tokenService, IMapper mapper, IEmailService emailService)
 	{
 		_userMananger = userMananger;
 		_context = context;
 		_tokenService = tokenService;
 		_mapper = mapper;
+		_emailService = emailService;
 	}
 
 
@@ -51,7 +54,7 @@ public class AccountController : BaseApiController
 	}
 
 	[HttpPost("reset")]
-	public async Task<ActionResult<UserDto>> ResetPassword(LoginDto model)
+	public async Task<ActionResult<UserDto>> ResetPassword(ResetDto model)
 	{
 		try
 		{
@@ -61,12 +64,12 @@ public class AccountController : BaseApiController
 			if (user == null) return Ok();
 
 			string novaSenha = Geral.GerarSenhaRandomicaLonga();
+
 			var resetToken = await _userMananger.GeneratePasswordResetTokenAsync(user);
 			var passwordChangeResult = await _userMananger.ResetPasswordAsync(user, resetToken, novaSenha);
-
 			if (passwordChangeResult.Succeeded)
 			{
-				//_emailService.EmailEsqueciSenha(user.Email, user.UserName, novaSenha);
+				var retorno = _emailService.ResetarSenhaEmail(user.Email, novaSenha, novaSenha);
 				return Ok();
 			}
 			else

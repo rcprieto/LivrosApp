@@ -9,6 +9,8 @@ export interface Livro {
   autor: string;
   resumo: string | null;
   appUser: User | null;
+  paginas: number | null;
+  categoria: string | null;
 }
 
 export interface LivroDto {
@@ -21,4 +23,6 @@ export interface LivroDto {
   resumo: string | null;
   appUserId: string | null;
   appUser: string | null;
+  paginas: number | null;
+  categoria: string | null;
 }

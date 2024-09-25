@@ -84,12 +84,17 @@ public class UsersController : BaseApiController
 	public async Task<ActionResult> UpdateUser(UserDto model)
 	{
 		var user = await _uow.AppUserRepository.GetUserById(model.Id ?? "");
+
+		var userExiste = _uow.AppUserRepository.GetUserByEmail(model.Id ?? "", model.Email ?? "");
+
 		if (user == null) return NotFound();
 
+		if (userExiste) return BadRequest("Email já cadastrado.");
+
+
 		user.UserName = model.UserName;
+		user.Email = model.Email;
 
-
-		var userRoles = await _userMananger.GetRolesAsync(user);
 
 		var teste = await _uow.Complete();
 		if (!teste) return BadRequest("Erro ao atualizar o usuário");
@@ -102,6 +107,7 @@ public class UsersController : BaseApiController
 		}
 
 
+		var userRoles = await _userMananger.GetRolesAsync(user);
 		if (model.Roles != null && model.Roles.Any())
 		{
 			//Adiciona as roles que ele não tem ainda
@@ -119,11 +125,47 @@ public class UsersController : BaseApiController
 			if (!result.Succeeded) return BadRequest("Erro ao remover Roles");
 		}
 
+
+
 		if (teste) return NoContent();
 
 		return BadRequest("Erro ao atualizar o usuário");
 
+
 	}
+
+	[HttpPut("editar-cadastro")]
+	public async Task<ActionResult> UpdateCadastro(UserEdicaoDto model)
+	{
+		var user = await _uow.AppUserRepository.GetUserById(model.Id ?? "");
+
+		var userExiste = _uow.AppUserRepository.GetUserByEmail(model.Id ?? "", model.Email ?? "");
+
+		if (user == null) return NotFound();
+
+		if (userExiste) return BadRequest("Email já cadastrado.");
+
+		user.UserName = model.UserName;
+		user.Email = model.Email;
+
+		var teste = await _uow.Complete();
+		if (!teste) return BadRequest("Erro ao atualizar o usuário");
+
+		if (!String.IsNullOrEmpty(model.Password) && !String.IsNullOrEmpty(model.PasswordAntigo))
+		{
+			var resultPass = await _userMananger.ChangePasswordAsync(user, model.Password, model.PasswordAntigo);
+			if (!resultPass.Succeeded)
+				return BadRequest(String.Join(", ", resultPass.Errors.Select(c => c.Description)));
+		}
+
+
+		if (teste) return NoContent();
+
+		return BadRequest("Erro ao atualizar o usuário");
+
+
+	}
+
 
 
 

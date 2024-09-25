@@ -30,7 +30,18 @@
         <app-text-input [type]="'text'"
                         [formControl]="$any(registerForm.controls['autor'])"></app-text-input>
       </div>
-
+    </div>
+    <div class="row">
+      <div class="col-6">
+        # Páginas:<br>
+        <app-text-input [type]="'number'"
+                        [formControl]="$any(registerForm.controls['paginas'])"></app-text-input>
+      </div>
+      <div class="col-6">
+        Gênero:<br>
+        <app-text-input [type]="'text'"
+                        [formControl]="$any(registerForm.controls['categoria'])"></app-text-input>
+      </div>
     </div>
     <div class="row mt-2">
       <div class="col-6">

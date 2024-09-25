@@ -21,6 +21,12 @@ public class AppUserRepository : IAppUserRepository
 		return await _context.Users.FindAsync(id);
 	}
 
+	public bool GetUserByEmail(string id, string email)
+	{
+		bool retorno = _context.Users.Where(c => c.Email.ToUpper() == email.ToUpper().Trim() && c.Id != id).Any();
+		return retorno;
+	}
+
 	public async Task<AppUser?> GetUserByUsernameAsync(string username)
 	{
 		return await _context.Users

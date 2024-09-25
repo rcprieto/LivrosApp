@@ -62,6 +62,8 @@ export class LivroModalComponent implements OnInit {
       resumo: [''],
       appUserId: [this.accountService.currentUser()?.id],
       appUser: [null],
+      paginas: [0],
+      categoria: [''],
     });
 
     if (this.livro != undefined && this.livro.id > 0) {

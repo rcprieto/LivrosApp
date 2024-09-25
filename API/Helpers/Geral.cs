@@ -570,7 +570,7 @@ namespace API.Helpers
 
 
 
-        public static string EnviarEmail(string Email, string EmailOrigem, string assunto, string mensagem, string ccoEmails = "", string senha = "", string remetente = "suporte@constructoit.com.br")
+        public static string EnviarEmail(string Email, string EmailOrigem, string assunto, string mensagem, string ccoEmails = "", string senha = "", string remetente = "")
         {
             //Define os dados do e-mail
             string nomeRemetente = "Livros";

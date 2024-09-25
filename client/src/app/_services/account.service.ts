@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../_environment/environment';
 import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../_models/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class AccountService {
 
   currentUser = signal<User | null>(null);
   private http = inject(HttpClient);
+  private router = inject(Router);
 
   login(model: any) {
     //Faz um post na API, usa o pipe para tratar o dado antes do subscribe, map transforma o retorno em um objeto User, coloca no localStorage e seta o currentUserSource com o user
@@ -49,6 +51,7 @@ export class AccountService {
   logout() {
     localStorage.removeItem('user');
     this.currentUser.set(null);
+    this.router.navigateByUrl('/');
   }
 
   setCurrentUser(user: User) {

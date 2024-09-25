@@ -31,6 +31,8 @@
       <th>Ações</th>
       <th>Livro</th>
       <th>Autor</th>
+      <th>#Pgs.</th>
+      <th>Gênero</th>
       <th class="text-center">Iniciado em</th>
       <th class="text-center">Finalizado em</th>
     </tr>
@@ -46,6 +48,8 @@
       </td>
       <td>{{livro.nome}}</td>
       <td>{{livro.autor}}</td>
+      <td>{{livro.paginas}}</td>
+      <td>{{livro.categoria}}</td>
       <td class="text-center">{{(livro.inicioLeitura | date: 'dd/MM/yyyy' : 'pt-BR')}}</td>
       <td class="text-center">{{(livro.fimLeitura | date: 'd \'de\' MMMM \'de\' y': '' : 'pt-BR')?.toUpperCase()}}</td>
     </tr>

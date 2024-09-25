@@ -21,13 +21,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.setCurrentUser();
-    // this.http.get(`https://localhost:5001/api/livro/get-livros`).subscribe(
-    //   {
-    //     next: (response) => { this.livros = response },
-    //     error: error => console.log(error),
-    //     complete: () => {},
-    //   }
-    // )
   }
 
   setCurrentUser() {

@@ -16,6 +16,10 @@ public class LivroDto
 
 	public DateTime? InicioLeitura { get; set; }
 
+	public int? Paginas { get; set; }
+
+	public string? Categoria { get; set; }
+
 	[StringLength(300)]
 	public string? UrlCapa { get; set; }
 

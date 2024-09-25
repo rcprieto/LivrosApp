@@ -23,6 +23,10 @@ public class Livro
 	[StringLength(500)]
 	public string? Resumo { get; set; }
 
+	public int? Paginas { get; set; }
+
+	public string? Categoria { get; set; } = "";
+
 	public required string AppUserId { get; set; }
 
 	[ForeignKey("AppUserId")]
@@ -38,4 +42,5 @@ public class LivroMock
 	public string? Nome { get; set; }
 	public string? Autor { get; set; }
 	public string? Data { get; set; }
+
 }

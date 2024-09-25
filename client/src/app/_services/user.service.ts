@@ -69,12 +69,15 @@ export class UserService {
     );
   }
 
+  updateCadastro(model: any) {
+    return this.http.put<User>(this.baseUrl + 'users/editar-cadastro', model);
+  }
+
   // getHttpOptions(){
   //   return {
   //     headers: new HttpHeaders({
   //       Authorization: `Bearer ${accountService.currentUser()?.token}`
   //     })
   //   }
-
   // }
 }

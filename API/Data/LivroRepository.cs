@@ -37,7 +37,10 @@ public class LivroRepository : ILivroRepository
 		if (!String.IsNullOrEmpty(pgaParams.Search))
 			livros = livros.Where(
 				c => c.Autor.ToUpper().Trim().Contains(pgaParams.Search.ToUpper().Trim())
-			|| c.Nome.Trim().ToUpper().Contains(pgaParams.Search.ToUpper().Trim()));
+			|| c.Nome.Trim().ToUpper().Contains(pgaParams.Search.ToUpper().Trim())
+			|| c.Categoria.Trim().ToUpper().Contains(pgaParams.Search.ToUpper().Trim())
+
+			);
 
 		livros = livros.OrderByDescending(c => c.Id);
 
