@@ -24,12 +24,6 @@ export class NavComponent {
   public accountService = inject(AccountService);
   private router = inject(Router);
 
-  login() {
-    this.accountService.login(this.model).subscribe({
-      error: (error) => console.log(error),
-    });
-  }
-
   logout() {
     this.accountService.logout();
     this.router.navigateByUrl('/');

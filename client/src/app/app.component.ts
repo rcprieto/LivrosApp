@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   livros: any;
   http = inject(HttpClient);
   title = 'Livros';
-  private accountService = inject(AccountService);
+  accountService = inject(AccountService);
 
   ngOnInit(): void {
     this.setCurrentUser();

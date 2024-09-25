@@ -487,3 +487,9 @@ $RECYCLE.BIN/
 /node_modules
 npm-degub.log
 yarn-error.log
+API/appsettings.json
+API/appsettings.json
+
+
+#.net Core
+appsettings.json

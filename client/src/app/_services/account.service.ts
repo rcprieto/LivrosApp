@@ -25,6 +25,16 @@ export class AccountService {
     );
   }
 
+  redefinirSenha(model: any) {
+    //Faz um post na API, usa o pipe para tratar o dado antes do subscribe, map transforma o retorno em um objeto User, coloca no localStorage e seta o currentUserSource com o user
+    return this.http
+      .post<User>(this.baseUrl + 'account/reset', model)
+      .subscribe({
+        next: (resp) => {},
+        error: (resp) => {},
+      });
+  }
+
   register(model: any) {
     return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(
       map((user) => {

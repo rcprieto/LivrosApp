@@ -1,0 +1,120 @@
+<section class="h-100 gradient-form"
+         style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10">
+        <div class="card rounded-3 text-black">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <div class="card-body p-md-5 ">
+
+                <div class="text-center">
+                  <img src="../assets/images/logoLogin.png"
+                       style="width: 100px;"
+                       alt="logo"
+                       class="mb-3">
+
+                </div>
+                <form *ngIf="!redefinirSenha"
+                      role="search"
+                      #loginForm="ngForm"
+                      (ngSubmit)="login()"
+                      autocomplete="off">
+
+                  <p>Informe seu email para realizar o login</p>
+                  <div class="form-outline mb-4">
+                    <input class="form-control "
+                           type="text"
+                           placeholder="Email"
+                           autocomplete="off"
+                           name="email"
+                           [(ngModel)]="model.email">
+
+                  </div>
+                  <div class="form-group mb-4">
+                    <div class="">
+                      <input class="form-control me-2"
+                             type="password"
+                             placeholder="Password"
+                             autocomplete="off"
+                             name="password"
+                             [(ngModel)]="model.password">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12">
+
+                      <button class="btn btn-info d-block w-100 waves-effect waves-light"
+                              type="submit"> <span class="fal fa-arrow-right"></span> Log In </button>
+                    </div>
+                  </div>
+                </form>
+
+
+
+                <div class="form-group mb-3 mt-3"
+                     *ngIf="!redefinirSenha">
+                  <div class="tex-center">
+                    <a href="javascript:void(0)"
+                       (click)="esqueceuSenha();"
+                       class="btn btn-outline-secondary w-100">Esqueceu sua senha?</a>
+                  </div>
+                </div>
+                <div *ngIf="redefinirSenha">
+                  <div class="logo ">
+                    <h3 class="font-weight-medium mb-3">Redefinir Senha</h3>
+                  </div>
+                  <div class="row mt-3 form-material">
+                    <!-- Form -->
+                    <form class="col-12"
+                          action="/Account/EsqueciSenha">
+                      <!-- email -->
+                      <div class="form-group row">
+                        <div class="col-12">
+                          <input class="form-control"
+                                 type="text"
+                                 required=""
+                                 placeholder="Email"
+                                 value="" />
+                        </div>
+                      </div>
+                      <!-- pwd -->
+                      <div class="row mt-3">
+                        <div class="col-12">
+                          <button class="btn d-block w-100 btn-primary text-uppercase"
+                                  style="background-color: #ea1f2a; color: white; border: white;"
+                                  id="resetSenha"
+                                  type="button"
+                                  name="action">
+                            Redefinir
+                          </button>
+                          <button class="btn d-block w-100 btn-outline-secondary text-uppercase mt-3"
+                                  id="cancelar"
+                                  type="button"
+                                  name="action"
+                                  (click)="cancelarRedefinir()">
+                            Cancelar
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+            <div class="col-lg-6 d-flex align-items-center gradient-custom-2 fundo">
+              <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                <h4 class="mb-4">LIVROS</h4>
+                <h6 class="mb-4">BEM VINDO</h6>
+                <p class="small mb-0"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

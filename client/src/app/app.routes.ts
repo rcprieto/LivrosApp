@@ -4,9 +4,10 @@ import { UserRegisterComponent } from './user/user-register/user-register.compon
 import { authGuard } from './_guards/auth.guard';
 import { adminGuard } from './_guards/admin.guard';
 import { LivrosListaComponent } from './livros/livros-lista/livros-lista.component';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
-  { path: '', component: AppComponent },
+  { path: '', component: LoginComponent },
 
   {
     path: '',

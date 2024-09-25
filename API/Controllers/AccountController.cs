@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.Entities;
+using API.Helpers;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -46,6 +47,36 @@ public class AccountController : BaseApiController
 			Email = user.Email,
 			Id = user.Id
 		};
+
+	}
+
+	[HttpPost("reset")]
+	public async Task<ActionResult<UserDto>> ResetPassword(LoginDto model)
+	{
+		try
+		{
+
+			var user = await _userMananger.Users.SingleOrDefaultAsync(m => m.Email == model.Email);
+
+			if (user == null) return Ok();
+
+			string novaSenha = Geral.GerarSenhaRandomicaLonga();
+			var resetToken = await _userMananger.GeneratePasswordResetTokenAsync(user);
+			var passwordChangeResult = await _userMananger.ResetPasswordAsync(user, resetToken, novaSenha);
+
+			if (passwordChangeResult.Succeeded)
+			{
+				//_emailService.EmailEsqueciSenha(user.Email, user.UserName, novaSenha);
+				return Ok();
+			}
+			else
+				return Ok();
+
+		}
+		catch (Exception err)
+		{
+			return BadRequest(err.Message);
+		}
 
 	}
 

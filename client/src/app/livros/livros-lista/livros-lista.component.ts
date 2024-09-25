@@ -81,7 +81,6 @@ export class LivrosListaComponent implements OnInit {
 
   buscar(event: any) {
     if (event.key === 'Enter') {
-      console.log('teste', this.search);
       this.livrosService.retornaLivros(
         this.pageNumber,
         this.pageSize,

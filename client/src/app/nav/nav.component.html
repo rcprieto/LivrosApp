@@ -67,29 +67,7 @@
         </div>
       </div>
       }
-      @if(!(this.accountService.currentUser()))
-      {
-      <form class="d-flex"
-            role="search"
-            #loginForm="ngForm"
-            (ngSubmit)="login()"
-            autocomplete="off">
-        <input class="form-control me-2"
-               type="text"
-               placeholder="Email"
-               autocomplete="off"
-               name="email"
-               [(ngModel)]="model.email">
-        <input class="form-control me-2"
-               type="password"
-               placeholder="Password"
-               autocomplete="off"
-               name="password"
-               [(ngModel)]="model.password">
-        <button class="btn btn-danger"
-                type="submit">Login</button>
-      </form>
-      }
+
     </div>
   </div>
 </nav>
