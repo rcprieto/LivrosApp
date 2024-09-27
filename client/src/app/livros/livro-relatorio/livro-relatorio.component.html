@@ -1,33 +1,42 @@
-<div class="d-flex justify-content-between align-items-center">
-  <div class="card flex-fill">
-    <div class="card-body ">
-      <h5>Total</h5>
-      <h6>20</h6>
+<div class="row">
+  <div class="col-md-auto col-xl-3 mb-2">
+    <div class="card ">
+      <div class="card-body ">
+        <h5>Livros</h5>
+        <h4>{{data().totalLivros}}</h4>
+      </div>
     </div>
   </div>
-  <div class="card flex-fill mx-3">
-    <div class="card-body ">
-      <h5>Páginas</h5>
-      <h6>20</h6>
+  <div class="col-md-auto col-xl-3 mb-2">
+    <div class="card flex-fill mx-3">
+      <div class="card-body ">
+        <h5>Páginas</h5>
+        <h4>{{data().totalPaginas}}</h4>
+      </div>
     </div>
   </div>
-  <div class="card flex-fill mx-3">
-    <div class="card-body">
-      <h5>Total no Ano</h5>
-      <h6>20</h6>
+  <div class="col-md-auto col-xl-3 mb-2">
+    <div class="card flex-fill mx-3">
+      <div class="card-body">
+        <h5>Livros no Ano</h5>
+        <h4>{{data().totalLivrosAno}}</h4>
+      </div>
     </div>
   </div>
-  <div class="card flex-fill">
-    <div class="card-body">
-      <h5>Total no Mês</h5>
-      <h6>20</h6>
+  <div class="col-md-auto col-xl-3 mb-2">
+    <div class="card flex-fill">
+      <div class="card-body">
+        <h5>Páginas no Ano</h5>
+        <h4>{{data().totalPaginasAno}}</h4>
+      </div>
     </div>
   </div>
 </div>
+
 <div class="card d-flex mt-4">
   <div class="card-body">
     <div class="row">
-      <div class="col-6">
+      <div class="col-md-auto col-xl-6">
         <div class="row">
           <div class="col">
             <table class="table table-striped">
@@ -40,19 +49,31 @@
                 </tr>
               </thead>
               <tbody>
+                @for (livro of data().reportListaLivros; track livro.nome) {
                 <tr>
-                  <td>Teste</td>
+                  <td>{{livro.nome}}, {{livro.autor}} - {{livro.data}} - Págs: {{livro.paginas}}</td>
                 </tr>
-                <tr>
-                  <td>Teste</td>
-                </tr>
+                }
+
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      <div class="col-6">
-        Livros por mês
+      <div class="col-md-auto col-xl-6">
+        <div id="chart">
+          <apx-chart [series]="series"
+                     [chart]="chartOptions"
+                     [labels]="labels"
+                     [xaxis]="chartOptions.xaxis"
+                     [stroke]="chartOptions.stroke"
+                     [colors]="chartOptions.colors"
+                     [dataLabels]="chartOptions.dataLabels"
+                     [legend]="chartOptions.legend"
+                     [markers]="chartOptions.markers"
+                     [grid]="chartOptions.grid"
+                     [title]="chartOptions.title"></apx-chart>
+        </div>
       </div>
     </div>
   </div>

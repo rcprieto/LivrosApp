@@ -8,6 +8,7 @@ namespace API.Interfaces
     {
         IAppUserRepository AppUserRepository { get; }
         ILivroRepository LivroRepository { get; }
+        IReportRepository ReportRepository { get; }
 
 
         Task<bool> Complete();

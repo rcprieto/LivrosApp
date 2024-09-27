@@ -16,39 +16,6 @@ public class Seed
 
 	public static async Task SeedUser(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, DataContext context)
 	{
-		if (!await context.Livros.AnyAsync())
-		{
-			var userData = await File.ReadAllTextAsync("Data/MOCK_DATA.json");
-			var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
-			var livros = JsonSerializer.Deserialize<List<LivroMock>>(userData, options);
-			string format = "dd/MM/yyyy";
-			foreach (var livro in livros)
-			{
-				DateTime date = DateTime.ParseExact(livro.Data, format, CultureInfo.InvariantCulture);
-
-				Livro novo = new Livro()
-				{
-					Nome = livro.Nome ?? "",
-					Id = livro.Id,
-					Autor = livro.Autor ?? "",
-					AppUserId = "113c71d7-544b-4274-91fc-75820928588a",
-					InicioLeitura = date,
-					FimLeitura = date,
-
-
-				};
-
-				await context.Livros.AddRangeAsync(novo);
-			}
-
-
-			await context.SaveChangesAsync();
-		}
-
-
-
-		//113c71d7-544b-4274-91fc-75820928588a	
 
 		if (await userManager.Users.AnyAsync()) return;
 
@@ -66,14 +33,6 @@ public class Seed
 		}
 
 
-		// foreach (var user in users)
-		// {
-		// 	using var hmac = new HMACSHA512();
-		// 	user.UserName = user.UserName.ToLower();
-		// 	await userManager.CreateAsync(user, "Pa$$w0rd");
-		// 	await userManager.AddToRoleAsync(user, "Member");
-		// }
-
 		var admin = new AppUser
 		{
 			UserName = "admin",
@@ -83,6 +42,41 @@ public class Seed
 		};
 		await userManager.CreateAsync(admin, "Pa$$w0rd");
 		await userManager.AddToRolesAsync(admin, ["Admin", "User"]);
+
+
+		if (!await context.Livros.AnyAsync())
+		{
+			var userData = await File.ReadAllTextAsync("Data/MOCK_DATA.json");
+			var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+			var livros = JsonSerializer.Deserialize<List<LivroMock>>(userData, options);
+			string format = "dd/MM/yyyy";
+			foreach (var livro in livros)
+			{
+				DateTime date = DateTime.ParseExact(livro.Data, format, CultureInfo.InvariantCulture);
+
+				Livro novo = new Livro()
+				{
+					Nome = livro.Nome ?? "",
+					Id = livro.Id,
+					Autor = livro.Autor ?? "",
+					AppUserId = admin.Id,
+					InicioLeitura = date,
+					FimLeitura = date,
+				};
+
+				await context.Livros.AddRangeAsync(novo);
+			}
+
+
+			await context.SaveChangesAsync();
+		}
+
+
+
+		//113c71d7-544b-4274-91fc-75820928588a	
+
+
 
 
 

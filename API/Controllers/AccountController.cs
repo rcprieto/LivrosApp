@@ -29,9 +29,8 @@ public class AccountController : BaseApiController
 	}
 
 
-
-
 	[HttpPost("login")]
+	[AllowAnonymous]
 	public async Task<ActionResult<UserDto>> Login(LoginDto model)
 	{
 		var user = await _userMananger.Users
@@ -54,6 +53,7 @@ public class AccountController : BaseApiController
 	}
 
 	[HttpPost("reset")]
+	[AllowAnonymous]
 	public async Task<ActionResult<UserDto>> ResetPassword(ResetDto model)
 	{
 		try

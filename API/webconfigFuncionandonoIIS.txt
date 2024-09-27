@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <location path="." inheritInChildApplications="false">
+    <system.webServer>
+      <handlers>
+        <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" />
+	<remove name="WebDAV" />
+      	<add name="PUTHandler" path="*" verb="PUT,DELETE" modules="IsapiModule" scriptProcessor="C:\Windows\System32\inetsrv\asp.dll" resourceType="Unspecified" requireAccess="None" />
+      </handlers>
+<modules>
+      <remove name="WebDAVModule" />
+    </modules>
+      <aspNetCore processPath="dotnet" arguments=".\API.dll" stdoutLogEnabled="false" stdoutLogFile=".\logs\stdout" hostingModel="inprocess" />
+    </system.webServer>
+  </location>
+</configuration>
+<!--ProjectGuid: 5eea2e7c-1e8b-4fd7-8527-428614fa9f2c-->
+
+//Colocar dentro do IISProfile.pubxml
+<ExcludeFilesFromDeployment>web.config</ExcludeFilesFromDeployment>

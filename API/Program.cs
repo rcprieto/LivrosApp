@@ -18,6 +18,16 @@ using Microsoft.EntityFrameworkCore;
 // "sslKey": "ssl/localhost-key.pem"
 // },
 
+//Charts
+//npm install apexcharts --save
+
+//No angular.json para publicar colocar essa pasta
+//  "options": {
+// "outputPath": {
+//   "base": "../API/wwwroot",
+//   "browser": ""
+// },
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -69,21 +79,26 @@ app.UseCors(x =>
 	x.AllowAnyHeader()
 	.AllowAnyMethod()
 	.AllowCredentials() //SignaIR precisa
-	.WithOrigins(["https://localhost:4200", "http://localhost:4200"]));
+	.WithOrigins(["https://localhost:4200", "http://localhost:4200", "https://localhost:5001"]));
 
 app.UseAuthentication(); //Vc tem um token valido
 app.UseAuthorization(); //Vc tem um token mas o que vc pode fazer
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.MapControllers();
+
+//Para rodar o angular dentro do wwwroot
+app.MapFallbackToController("Index", "Fallback");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 try
 {
-	// var context = services.GetRequiredService<DataContext>();
-	// var userManager = services.GetRequiredService<UserManager<AppUser>>();
-	// var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
-	// await context.Database.MigrateAsync();
+	var context = services.GetRequiredService<DataContext>();
+	var userManager = services.GetRequiredService<UserManager<AppUser>>();
+	var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+	//await context.Database.MigrateAsync();
 	//await context.Database.ExecuteSqlRawAsync("DELETE FROM [Livros]"); //Para sqllite
 	//await context.Database.ExecuteSqlRawAsync("TRUNCATE FROM TABLE [Connections]");
 	//await Seed.SeedUser(userManager, roleManager, context);

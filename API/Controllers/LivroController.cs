@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize(Policy = "RequireAdminRole")]
+    [Authorize(Policy = "UserRole")]
     public class LivroController : BaseApiController
     {
         private readonly IUnitOfWork _uow;

@@ -13,12 +13,14 @@ namespace API.Data
         private readonly DataContext _context;
         public IAppUserRepository AppUserRepository { get; }
         public ILivroRepository LivroRepository { get; }
+        public IReportRepository ReportRepository { get; }
 
         public UnitOfWork(DataContext context)
         {
             this._context = context;
             this.AppUserRepository = new AppUserRepository(context);
             this.LivroRepository = new LivroRepository(context);
+            this.ReportRepository = new ReportRepository(context);
         }
 
 
